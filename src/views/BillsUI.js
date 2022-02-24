@@ -24,7 +24,10 @@ const rows = (data) => {
 }
 
 export default ({ data: bills, loading, error }) => {
-  
+  if(bills) {
+  bills.sort(function(a,b) {return new Date(b.date) - new Date(a.date)})
+  }
+
   const modal = () => (`
     <div class="modal fade" id="modaleFile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

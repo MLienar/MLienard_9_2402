@@ -21,7 +21,6 @@ const bill = {
   "email": "a@a",
   "pct": 20
 }
-
 const billAccepted = {
   ...bill,
   "status": "accepted"

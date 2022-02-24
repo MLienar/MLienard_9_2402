@@ -142,10 +142,12 @@ export default class {
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
       $(`#status-bills-container${this.index}`)
         .html("")
-      this.counter ++
+      this.counter = 0
     }
 
     bills.forEach(bill => {
+      $(`#open-bill${bill.id}`).unbind("click")
+
       $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
     })
 

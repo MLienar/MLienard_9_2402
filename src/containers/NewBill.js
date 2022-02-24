@@ -14,9 +14,12 @@ export default class NewBill {
     this.fileName = null
     this.billId = null
     new Logout({ document, localStorage, onNavigate })
+    
   }
   handleChangeFile = e => {
+    const errorMessage = this.document.querySelector(".error-message")
     e.preventDefault()
+    errorMessage.innerText = ""
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
@@ -24,7 +27,6 @@ export default class NewBill {
     const email = JSON.parse(localStorage.getItem("user")).email
     formData.append('file', file)
     formData.append('email', email)
-
     this.store
       .bills()
       .create({
@@ -62,6 +64,7 @@ export default class NewBill {
   }
 
   // not need to cover this function by tests
+        /* istanbul ignore next */
   updateBill = (bill) => {
     if (this.store) {
       this.store
