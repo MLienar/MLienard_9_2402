@@ -11,7 +11,8 @@ import {localStorageMock} from "../__mocks__/localStorage.js";
 import mockStore from "../__mocks__/store"
 import router from "../app/Router.js";
 import userEvent from "@testing-library/user-event";
-
+import Logout from "../containers/Logout"
+import requestsMock from "../__mocks__/requests"
 jest.mock("../app/store", () => mockStore)
 
 describe("Given I am connected as an employee", () => {
@@ -62,6 +63,24 @@ describe("Given I am connected as an employee", () => {
       expect(showJustif).toHaveBeenCalled()
       expect(screen.getByText("Justificatif")).toBeTruthy()
     })  })
+
+   describe('When I am on Bills page but it is loading', () => {
+    test('Then, Loading page should be rendered', () => {
+      const html = BillsUI({ loading: true })
+      document.body.innerHTML = html
+
+      expect(screen.getAllByText('Loading...')).toBeTruthy()
+    })
+  })
+
+  describe('When I am on Bills page but back-end send an error message', () => {
+    test('Then, Error page should be rendered', () => {
+      const html = BillsUI({ error: 'some error message' })
+      document.body.innerHTML = html
+
+      expect(screen.getAllByText('Erreur')).toBeTruthy()
+    })
+  })
 
   describe("When I click on the new bill icon", () => {
     test("Then I should navigate to the new bill creation page", () => {
@@ -124,9 +143,7 @@ describe("Given I am a user connected as Employee", () => {
     test("fetches bills from an API and fails with 404 message error", async () => {
       mockStore.bills.mockImplementationOnce(() => {
         return {
-          list : () =>  {
-            return Promise.reject(new Error("Erreur 404"))
-          }
+          list : requestsMock.error404
         }})
       window.onNavigate(ROUTES_PATH.Bills)
       await new Promise(process.nextTick);
@@ -138,9 +155,7 @@ describe("Given I am a user connected as Employee", () => {
 
       mockStore.bills.mockImplementationOnce(() => {
         return {
-          list : () =>  {
-            return Promise.reject(new Error("Erreur 500"))
-          }
+          list : requestsMock.error500
         }})
 
       window.onNavigate(ROUTES_PATH.Bills)

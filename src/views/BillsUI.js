@@ -20,12 +20,19 @@ const row = (bill) => {
   }
 
 const rows = (data) => {
+  console.log("data", data);
   return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
 }
 
 export default ({ data: bills, loading, error }) => {
   if(bills) {
-  bills.sort(function(a,b) {return new Date(b.date) - new Date(a.date)})
+    for (let i=0; i<bills.length; i++) { 
+      if (bills[i].date === undefined || bills[i].name === null) {
+        bills.splice(i, 1)
+      } 
+    }
+    console.log(bills);
+    bills.sort(function(a,b) {return new Date(b.date) - new Date(a.date)})
   }
 
   const modal = () => (`

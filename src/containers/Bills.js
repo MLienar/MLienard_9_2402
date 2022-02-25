@@ -38,7 +38,7 @@ export default class {
             try {
               return {
                 ...doc,
-                date: formatDate(doc.date),
+                // date: formatDate(doc.date),
                 status: formatStatus(doc.status)
               }
    
@@ -53,8 +53,24 @@ export default class {
               }
             }
           })
-          console.log(bills)
-        return bills
+          if(bills) {
+            let i=0
+            while ( i < bills.length) { 
+              if (bills[i].name === null) {
+                /* istanbul ignore next */
+                bills.splice(i, 1)
+              } else {
+                i ++
+              }
+            }
+          console.log(bills);
+          bills.sort(function(a,b) {
+          return new Date(b.date) - new Date(a.date)})
+          for (const bill of bills) {
+            bill.date = formatDate(bill.date)
+          }
+          return bills
+        }
       })
     }
   }

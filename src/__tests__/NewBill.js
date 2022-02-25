@@ -11,19 +11,8 @@ import mockStore from "../__mocks__/store"
 import { ROUTES_PATH } from "../constants/routes"
 import user from "@testing-library/user-event"
 import BillsUI from "../views/BillsUI"
-
- const inputData = {
-        email: "johndoe@email.com",
-        type: "Transports",
-        name: "Test",
-        date: "22-01-2022",
-        vat: 30,
-        pct: 10,
-        commentary: "Empty string",
-        fileUrl: "dummyurl",
-        fileName: "dummyName",
-        status: "pending"
-      };
+import requestsMock from "../__mocks__/requests.js";
+import {mockedBill as inputData} from "../__mocks__/bill.js";
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on NewBill Page", () => {
@@ -90,8 +79,8 @@ describe("Given I am connected as an employee", () => {
     const postRequest = jest
       .fn(mockStore.create)
       .mockImplementationOnce(mockStore.create)
-      .mockImplementationOnce(() => Promise.reject(new Error('Erreur 404')))
-      .mockImplementationOnce(() => Promise.reject(new Error('Erreur 500')))
+      .mockImplementationOnce(requestsMock.error404)
+      .mockImplementationOnce(requestsMock.error500)
 
     test("Then a POST request should be made", async () => {
       const bills = await postRequest(inputData)
